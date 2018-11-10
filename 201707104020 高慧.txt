@@ -1,0 +1,524 @@
+ 一、查询
+mysql> show databases ;
++-----------------------+
+| Database                    |
++-----------------------+
+| buy  iphones   people |
+| gouwuche                  |
+| information_schema   |
+| mysql                         |
+| performance_schema |
+| sys                             |
+| xuesheng                   |
+| yue                            |
++-----------------------+
+8 rows in set (0.00 sec)
+
+mysql> use gouwuche;
+Database changed
+
+1、全查询：
+mysql> select * from  jobs;
++------------+---------------------------------+------------+------------+
+| JOB_ID     | JOB_TITLE                              | MIN_SALARY | MAX_SALARY |
++------------+---------------------------------+------------+------------+
+| AD_PRES    | President                                  | 20080      | 40000        |
+| AD_VP       | Administration Vice President     |  15000      | 30000      |
+| AD_ASST    | Administration Assistant        | 3000       | 6000       |
+| FI_MGR     | Finance Manager                 | 8200       | 16000      |
+| FI_ACCOUNT | Accountant                      | 4200       | 9000       |
+| AC_MGR     | Accounting Manager              | 8200       | 16000      |
+| AC_ACCOUNT | Public Accountant               | 4200       | 9000       |
+| SA_MAN     | Sales Manager                   | 10000      | 20080      |
+| SA_REP     | Sales Representative            | 6000       | 12008      |
+| PU_MAN     | Purchasing Manager              | 8000       | 15000      |
+| PU_CLERK   | Purchasing Clerk                | 2500       | 5500       |
+| ST_MAN     | Stock Manager                   | 5500       | 8500       |
+| ST_CLERK   | Stock Clerk                     | 2008       | 5000       |
+| SH_CLERK   | Shipping Clerk                  | 2500       | 5500       |
+| IT_PROG    | Programmer                      | 4000       | 10000      |
+| MK_MAN     | Marketing Manager               | 9000       | 15000      |
+| MK_REP     | Marketing Representative        | 4000       | 9000       |
+| HR_REP     | Human Resources Representative  | 4000       | 9000       |
+| PR_REP     | Public Relations Representative | 4500       | 10500      |
++------------+---------------------------------+------------+------------+
+19 rows in set (0.00 sec)
+
+2、多条件查询：
+（1）
+mysql> select * from jobs where  MAX_SALARY =9000;
++------------+--------------------------------+------------+------------+
+| JOB_ID     | JOB_TITLE                      | MIN_SALARY | MAX_SALARY |
++------------+--------------------------------+------------+------------+
+| FI_ACCOUNT | Accountant                     | 4200       | 9000       |
+| AC_ACCOUNT | Public Accountant              | 4200       | 9000       |
+| MK_REP     | Marketing Representative       | 4000       | 9000       |
+| HR_REP     | Human Resources Representative | 4000       | 9000       |
++------------+--------------------------------+------------+------------+
+4 rows in set (0.00 sec)
+
+（2）
+mysql> Select *  from  jobs  where   MIN_SALARY >5000  and MIN_SALARY <15000;
++--------+----------------------+------------+------------+
+| JOB_ID | JOB_TITLE            | MIN_SALARY | MAX_SALARY |
++--------+----------------------+------------+------------+
+| FI_MGR | Finance Manager      | 8200       | 16000      |
+| AC_MGR | Accounting Manager   | 8200       | 16000      |
+| SA_MAN | Sales Manager        | 10000      | 20080      |
+| SA_REP | Sales Representative | 6000       | 12008      |
+| PU_MAN | Purchasing Manager   | 8000       | 15000      |
+| ST_MAN | Stock Manager        | 5500       | 8500       |
+| MK_MAN | Marketing Manager    | 9000       | 15000      |
++--------+----------------------+------------+------------+
+7 rows in set (0.00 sec)
+
+3、查询不重复的记录：
+mysql>  select distinct  MIN_SALARY from jobs;
++------------+
+| MIN_SALARY |
++------------+
+|       20080      |
+|       15000      |
+|        3000       |
+|        8200       |
+|        4200       |
+|       10000      |
+|        6000       |
+|        8000       |
+|        2500       |
+|        5500       |
+|        2008       |
+|        4000       |
+|        9000       |
+|        4500       |
++------------+
+14 rows in set (0.00 sec)
+
+二、排序和限制
+1、排序：
+mysql> desc jobs;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| JOB_ID     | varchar(255) | YES  |     | NULL    |       |
+| JOB_TITLE  | varchar(255) | YES  |     | NULL    |       |
+| MIN_SALARY | varchar(255) | YES  |     | NULL    |       |
+| MAX_SALARY | varchar(255) | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+4 rows in set (0.00sec)
+
+mysql> alter table jobs change min_salary min_salary int;
+Query OK, 19 rows affected (0.00 sec)
+Records: 19  Duplicates: 0  Warnings: 0
+
+mysql> desc jobs;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| JOB_ID     | varchar(255) | YES  |     | NULL    |       |
+| JOB_TITLE  | varchar(255) | YES  |     | NULL    |       |
+| min_salary | int(11)      | YES  |     | NULL    |       |
+| MAX_SALARY | varchar(255) | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+（1）升序：
+mysql> select * from  jobs order by  MIN_SALARY ;
++------------+---------------------------------+------------+------------+
+| JOB_ID     | JOB_TITLE                       | min_salary | MAX_SALARY |
++------------+---------------------------------+------------+------------+
+| ST_CLERK   | Stock Clerk                     |       2008 | 5000       |
+| PU_CLERK   | Purchasing Clerk                |       2500 | 5500       |
+| SH_CLERK   | Shipping Clerk                  |       2500 | 5500       |
+| AD_ASST    | Administration Assistant        |       3000 | 6000       |
+| IT_PROG    | Programmer                      |       4000 | 10000      |
+| MK_REP     | Marketing Representative        |       4000 | 9000       |
+| HR_REP     | Human Resources Representative  |       4000 | 9000       |
+| FI_ACCOUNT | Accountant                      |       4200 | 9000       |
+| AC_ACCOUNT | Public Accountant               |       4200 | 9000       |
+| PR_REP     | Public Relations Representative |       4500 | 10500      |
+| ST_MAN     | Stock Manager                   |       5500 | 8500       |
+| SA_REP     | Sales Representative            |       6000 | 12008      |
+| PU_MAN     | Purchasing Manager              |       8000 | 15000      |
+| FI_MGR     | Finance Manager                 |       8200 | 16000      |
+| AC_MGR     | Accounting Manager              |       8200 | 16000      |
+| MK_MAN     | Marketing Manager               |       9000 | 15000      |
+| SA_MAN     | Sales Manager                   |      10000 | 20080      |
+| AD_VP      | Administration Vice President   |      15000 | 30000      |
+| AD_PRES    | President                       |      20080 | 40000      |
++------------+---------------------------------+------------+------------+
+19 rows in set (0.00 sec)
+
+（2）降序：
+mysql> select * from  jobs order by  MIN_SALARY desc;
++------------+---------------------------------+------------+------------+
+| JOB_ID     | JOB_TITLE                       | min_salary | MAX_SALARY |
++------------+---------------------------------+------------+------------+
+| AD_PRES    | President                       |      20080 | 40000      |
+| AD_VP      | Administration Vice President   |      15000 | 30000      |
+| SA_MAN     | Sales Manager                   |      10000 | 20080      |
+| MK_MAN     | Marketing Manager               |       9000 | 15000      |
+| FI_MGR     | Finance Manager                 |       8200 | 16000      |
+| AC_MGR     | Accounting Manager              |       8200 | 16000      |
+| PU_MAN     | Purchasing Manager              |       8000 | 15000      |
+| SA_REP     | Sales Representative            |       6000 | 12008      |
+| ST_MAN     | Stock Manager                   |       5500 | 8500       |
+| PR_REP     | Public Relations Representative |       4500 | 10500      |
+| FI_ACCOUNT | Accountant                      |       4200 | 9000       |
+| AC_ACCOUNT | Public Accountant               |       4200 | 9000       |
+| IT_PROG    | Programmer                      |       4000 | 10000      |
+| MK_REP     | Marketing Representative        |       4000 | 9000       |
+| HR_REP     | Human Resources Representative  |       4000 | 9000       |
+| AD_ASST    | Administration Assistant        |       3000 | 6000       |
+| PU_CLERK   | Purchasing Clerk                |       2500 | 5500       |
+| SH_CLERK   | Shipping Clerk                  |       2500 | 5500       |
+| ST_CLERK   | Stock Clerk                     |       2008 | 5000       |
++------------+---------------------------------+------------+------------+
+19 rows in set (0.00 sec)
+
+2、限制：
+（1）数据升序后限制：
+mysql>  select * from  jobs order by  MIN_SALARY limit 2,6;
++------------+--------------------------------+------------+------------+
+| JOB_ID     | JOB_TITLE                      | min_salary | MAX_SALARY |
++------------+--------------------------------+------------+------------+
+| SH_CLERK   | Shipping Clerk                 |       2500 | 5500       |
+| AD_ASST    | Administration Assistant       |       3000 | 6000       |
+| IT_PROG    | Programmer                     |       4000 | 10000      |
+| HR_REP     | Human Resources Representative |       4000 | 9000       |
+| MK_REP     | Marketing Representative       |       4000 | 9000       |
+| AC_ACCOUNT | Public Accountant              |       4200 | 9000       |
++------------+--------------------------------+------------+------------+
+6 rows in set (0.00 sec)
+
+（2）数据降序后限制：
+mysql>  select * from  jobs order by  MIN_SALARY desc limit 2,6;
++--------+----------------------+------------+------------+
+| JOB_ID | JOB_TITLE            | min_salary | MAX_SALARY |
++--------+----------------------+------------+------------+
+| SA_MAN | Sales Manager        |      10000 | 20080      |
+| MK_MAN | Marketing Manager    |       9000 | 15000      |
+| FI_MGR | Finance Manager      |       8200 | 16000      |
+| AC_MGR | Accounting Manager   |       8200 | 16000      |
+| PU_MAN | Purchasing Manager   |       8000 | 15000      |
+| SA_REP | Sales Representative |       6000 | 12008      |
++--------+----------------------+------------+------------+
+6 rows in set (0.00 sec)
+
+三、聚合
+(1)
+mysql> select sum( min_salary) from jobs ;
++------------------+
+| sum( min_salary) |
++------------------+
+|           124888     |
++------------------+
+1 row in set (0.11 sec)
+
+(2)
+mysql> select  MAX_SALARY,count( MAX_SALARY) from jobs group by  MAX_SALARY ;
++------------+--------------------+
+| MAX_SALARY | count( MAX_SALARY) |
++------------+--------------------+
+| 40000      |                  1 |
+| 30000      |                  1 |
+| 6000       |                  1 |
+| 16000      |                  2 |
+| 9000       |                  4 |
+| 20080      |                  1 |
+| 12008      |                  1 |
+| 15000      |                  2 |
+| 5500       |                  2 |
+| 8500       |                  1 |
+| 5000       |                  1 |
+| 10000      |                  1 |
+| 10500      |                  1 |
++------------+--------------------+
+13 rows in set (0.00 sec)
+
+(3)
+mysql> select min_salary ,count(min_salary) from jobs
+    ->  where min_salary>4000 group by min_salary;
++------------+-------------------+
+| min_salary | count(min_salary) |
++------------+-------------------+
+|      20080 |                 1 |
+|      15000 |                 1 |
+|       8200 |                 2 |
+|       4200 |                 2 |
+|      10000 |                 1 |
+|       6000 |                 1 |
+|       8000 |                 1 |
+|       5500 |                 1 |
+|       9000 |                 1 |
+|       4500 |                 1 |
++------------+-------------------+
+10 rows in set (0.00 sec)
+
+四、表连接:
+mysql> select * from regions;
++-----------+------------------------+
+| REGION_ID | REGION_NAME            |
++-----------+------------------------+
+| 1         | Europe                 |
+| 2         | Americas               |
+| 3         | Asia                   |
+| 4         | Middle East and Africa |
++-----------+------------------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from countries;
++------------+--------------------------+-----------+
+| COUNTRY_ID | COUNTRY_NAME             | REGION_ID |
++------------+--------------------------+-----------+
+| AR         | Argentina                | 2         |
+| AU         | Australia                | 3         |
+| BE         | Belgium                  | 1         |
+| BR         | Brazil                   | 2         |
+| CA         | Canada                   | 2         |
+| CH         | Switzerland              | 1         |
+| CN         | China                    | 3         |
+| DE         | Germany                  | 1         |
+| DK         | Denmark                  | 1         |
+| EG         | Egypt                    | 4         |
+| FR         | France                   | 1         |
+| IL         | Israel                   | 4         |
+| IN         | India                    | 3         |
+| IT         | Italy                    | 1         |
+| JP         | Japan                    | 3         |
+| KW         | Kuwait                   | 4         |
+| ML         | Malaysia                 | 3         |
+| MX         | Mexico                   | 2         |
+| NG         | Nigeria                  | 4         |
+| NL         | Netherlands              | 1         |
+| SG         | Singapore                | 3         |
+| UK         | United Kingdom           | 1         |
+| US         | United States of America | 2         |
+| ZM         | Zambia                   | 4         |
+| ZW         | Zimbabwe                 | 4         |
++------------+--------------------------+-----------+
+25 rows in set (0.00 sec)
+
+mysql>  alter table countries change  REGION_ID ID int;
+Query OK, 25 rows affected (2.17 sec)
+Records: 25  Duplicates: 0  Warnings: 0
+
+mysql>  desc countries;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| COUNTRY_ID   | varchar(255) | YES  |     | NULL    |       |
+| COUNTRY_NAME | varchar(255) | YES  |     | NAME    |       |
+| ID           | int(11)      | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+1、内连接：
+mysql> select ID,REGION_ID from countries , regions where
+    -> countries.id =regions.REGION_ID;
++------+-----------+
+| ID   | REGION_ID |
++------+-----------+
+|    2 | 2         |
+|    3 | 3         |
+|    1 | 1         |
+|    2 | 2         |
+|    2 | 2         |
+|    1 | 1         |
+|    3 | 3         |
+|    1 | 1         |
+|    1 | 1         |
+|    4 | 4         |
+|    1 | 1         |
+|    4 | 4         |
+|    3 | 3         |
+|    1 | 1         |
+|    3 | 3         |
+|    4 | 4         |
+|    3 | 3         |
+|    2 | 2         |
+|    4 | 4         |
+|    1 | 1         |
+|    3 | 3         |
+|    1 | 1         |
+|    2 | 2         |
+|    4 | 4         |
+|    4 | 4         |
++------+-----------+
+25 rows in set (0.00 sec)
+2、外连接：
+（1）左连接：
+mysql>  select ID,REGION_ID from countries left join regions
+    -> on countries.id =regions.REGION_ID;
++------+-----------+
+| ID   | REGION_ID |
++------+-----------+
+|    1 | 1         |
+|    1 | 1         |
+|    1 | 1         |
+|    1 | 1         |
+|    1 | 1         |
+|    1 | 1         |
+|    1 | 1         |
+|    1 | 1         |
+|    2 | 2         |
+|    2 | 2         |
+|    2 | 2         |
+|    2 | 2         |
+|    2 | 2         |
+|    3 | 3         |
+|    3 | 3         |
+|    3 | 3         |
+|    3 | 3         |
+|    3 | 3         |
+|    3 | 3         |
+|    4 | 4         |
+|    4 | 4         |
+|    4 | 4         |
+|    4 | 4         |
+|    4 | 4         |
+|    4 | 4         |
++------+-----------+
+25 rows in set (0.00 sec)
+
+（2）右连接：
+mysql>  select ID,REGION_ID from countries right join regions
+    ->  on countries.id =regions.REGION_ID;
++------+-----------+
+| ID   | REGION_ID |
++------+-----------+
+|    2 | 2         |
+|    3 | 3         |
+|    1 | 1         |
+|    2 | 2         |
+|    2 | 2         |
+|    1 | 1         |
+|    3 | 3         |
+|    1 | 1         |
+|    1 | 1         |
+|    4 | 4         |
+|    1 | 1         |
+|    4 | 4         |
+|    3 | 3         |
+|    1 | 1         |
+|    3 | 3         |
+|    4 | 4         |
+|    3 | 3         |
+|    2 | 2         |
+|    4 | 4         |
+|    1 | 1         |
+|    3 | 3         |
+|    1 | 1         |
+|    2 | 2         |
+|    4 | 4         |
+|    4 | 4         |
++------+-----------+
+25 rows in set (0.00 sec)
+
+（3）in查询：
+mysql> select * from countries where countries.id in(select REGION_ID from regions);
++------------+--------------------------+------+
+| COUNTRY_ID | COUNTRY_NAME             | ID   |
++------------+--------------------------+------+
+| AR         | Argentina                |    2 |
+| AU         | Australia                |    3 |
+| BE         | Belgium                  |    1 |
+| BR         | Brazil                   |    2 |
+| CA         | Canada                   |    2 |
+| CH         | Switzerland              |    1 |
+| CN         | China                    |    3 |
+| DE         | Germany                  |    1 |
+| DK         | Denmark                  |    1 |
+| EG         | Egypt                    |    4 |
+| FR         | France                   |    1 |
+| IL         | Israel                   |    4 |
+| IN         | India                    |    3 |
+| IT         | Italy                    |    1 |
+| JP         | Japan                    |    3 |
+| KW         | Kuwait                   |    4 |
+| ML         | Malaysia                 |    3 |
+| MX         | Mexico                   |    2 |
+| NG         | Nigeria                  |    4 |
+| NL         | Netherlands              |    1 |
+| SG         | Singapore                |    3 |
+| UK         | United Kingdom           |    1 |
+| US         | United States of America |    2 |
+| ZM         | Zambia                   |    4 |
+| ZW         | Zimbabwe                 |    4 |
++------------+--------------------------+------+
+25 rows in set (0.35 sec)
+
+（4）exists查询：
+mysql> select * from countries where exists (select REGION_ID
+    -> from regions where REGION_ID=1);
++------------+--------------------------+------+
+| COUNTRY_ID | COUNTRY_NAME             | ID   |
++------------+--------------------------+------+
+| AR         | Argentina                |    2 |
+| AU         | Australia                |    3 |
+| BE         | Belgium                  |    1 |
+| BR         | Brazil                   |    2 |
+| CA         | Canada                   |    2 |
+| CH         | Switzerland              |    1 |
+| CN         | China                    |    3 |
+| DE         | Germany                  |    1 |
+| DK         | Denmark                  |    1 |
+| EG         | Egypt                    |    4 |
+| FR         | France                   |    1 |
+| IL         | Israel                   |    4 |
+| IN         | India                    |    3 |
+| IT         | Italy                    |    1 |
+| JP         | Japan                    |    3 |
+| KW         | Kuwait                   |    4 |
+| ML         | Malaysia                 |    3 |
+| MX         | Mexico                   |    2 |
+| NG         | Nigeria                  |    4 |
+| NL         | Netherlands              |    1 |
+| SG         | Singapore                |    3 |
+| UK         | United Kingdom           |    1 |
+| US         | United States of America |    2 |
+| ZM         | Zambia                   |    4 |
+| ZW         | Zimbabwe                 |    4 |
++------------+--------------------------+------+
+25 rows in set (0.00 sec)
+
+mysql>  select * from countries where exists (select REGION_ID
+    ->  from regions where REGION_ID=0);
+Empty set (0.00 sec)
+
+四、记录联合
+mysql> select COUNTRY_ID  from countries union all select REGION_ID from regions;
++------------+
+| COUNTRY_ID |
++------------+
+| AR         |
+| AU         |
+| BE         |
+| BR         |
+| CA         |
+| CH         |
+| CN         |
+| DE         |
+| DK         |
+| EG         |
+| FR         |
+| IL         |
+| IN         |
+| IT         |
+| JP         |
+| KW         |
+| ML         |
+| MX         |
+| NG         |
+| NL         |
+| SG         |
+| UK         |
+| US         |
+| ZM         |
+| ZW         |
+| 1          |
+| 2          |
+| 3          |
+| 4          |
++------------+
+29 rows in set (0.10 sec)
