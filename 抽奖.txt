@@ -1,0 +1,10 @@
+import random
+number = random.randint(0,10) 
+if number%2==0:
+    print(number)
+    print('¹§Ï²ÄãÖĞ½±ÁË')
+else:
+    print(number)
+    print('Î´ÖĞ½±')
+8
+¹§Ï²ÄãÖĞ½±ÁË

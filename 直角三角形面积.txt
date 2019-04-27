@@ -1,0 +1,9 @@
+di = input('请输入底:')
+gao = input('请输入高:')
+di = float(di)
+gao = float(gao)
+area =di*gao*0.5
+print('三角形面积为:',area)
+请输入底:3
+请输入高:4
+三角形面积为: 6.0
